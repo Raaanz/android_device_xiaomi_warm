@@ -1,109 +1,160 @@
 // If you modify this file,
-//    1. Push it to /vendor/etc/media_pineapple/video_system_specs.json on the device
+//    1. Push it to /vendor/etc/video_system_specs.json on the device
 //    2. Kill media.hwcodec to get the new changed values.
 // Note: Please do not use hexadecimal values 0x in this file.
 {
     "Video": {
     // feature list used for enable/disable
         "Features": {
+            // This enables single buffer multi-offset feature for decoder input buffer
+            "api_same_input_buffer_support": true,
             // This is used for encoder color space conversion with custom matrix.
             // custom matrix is defined in kernel driver
             // this triggers to enable CSC to 709LR with custom matrix
             "enc_csc_custom_matrix": false,
+            // this enables adaptive blur if possible by encoder.
+            // this is preprocessing of encoder input YUV buffers
+            "enc_auto_blur": false,
+            // this enables encoding rotate by C2D. it is used for some low tier end chipsets which
+            // don't support rotate feature in video core. TODO - Rename as enc_vpss_rotation
+            "enc_c2d_rotation": true,
+            // target supports cvp for all encode usecases.
+            "enc_cvp_enable": false,
             // encoder csc enable
-            "enc_csc_enable": false
+            "enc_csc_enable": false,
+            "platform_disable_ubwc": true,
+            // this enables pipeline code for querying capabilities and creating codecs
+            "pipelining": false,
+            // this enables pre-processing pipeline
+            "pre_processing_pipelining": false,
+            // It is used to enable fastCV engine for flip support in the absence of VPSS hardware
+            // support.
+            "enc_vpss_flip": false,
+            // this enables RGB conversion with image convertor
+            "rgb_image_converter": true,
+            // perf controller support for decoder and encoder
+            "perf_control_enable": true,
+            // this will enable the graphics pipeline for
+            // CSC and converting images to other format and
+            // Rotating the frame etc
+            "vtxr_enable": true,
+            // this will enable software I/O chache coherency
+            "sw_cache_coherency": true,
+            // - this enables sw fence for playback usecases.
+            // - this is used for debugging purpose only.
+            // - this requires "debug_private_dec_picture_order"
+            //   to be set to true as well to enable SW fence feature
+            "debug_private_dec_sw_fence": false,
+            // - this enables picture order for playback usecases
+            // - this is used for debugging purpose only.
+            "debug_private_dec_picture_order": false
         },
         "Presets": {
+            // platform value to force HDR disable. if this value is enabled
+            // then HDR is disabled. this value acts as a bit mask.
+            //  0x0 : no over ride,
+            //  0x1 : disables decoder HDR,
+            //  0x2 : disbaled encoder HDR,
+            //  0x3 : disables both decoder and encoder HDR.
+            "vidc_disable_hdr" : 3,
+            // this is used for secure decoding performance boost handling
+            // prefech sizes of internal & output buffers
+            // internal : 0 MB
+            // output   : 0 MB
+            "dec_sec_prefetch_size_internal": 0,
+            "dec_sec_prefetch_size_output": 0,
+            // control to force enable linear color format for decoder
+            // if this is enable, then decoder will produce linear color format output.
+            // it is bitmask:
+            //  0x0: no override,
+            //  0x1: enable 8 bit: linear format. 10 bit: compressed format
+            //  0x2: 8 bit: compressed format. 10 bit: linear format
+            //  0x3: 8 bit: linear format. 10 bit: linear format
+            "dec_linear_color_format": 3,
+            // maximum MB/sec for default single non-ref b-frame enablement case
+            "enc_single_nonref_b_max_mbs_per_sec": 0,
+            // maximum MB/frame for default adaptive b-frame enablement case
+            "enc_single_nonref_b_max_mbs_per_frame": 0,
+            // maximum width for default adaptive b-frame enablement case
+            "enc_single_nonref_b_max_width": 0,
+            // maximum decoder output rate if it is Nuplayer path and
+            // player sets max refresh rate
+            "max_supported_render_rate": 120,
             // control to force enable linear color format for encoder
             // if this is enable, then encoder will ask camera via
             // consumer flag to inform usage of linear color format.
             // it is used only for camera path. can't be used for non-camera producer case
             // it is bitmask:
-            //  0: no override,
-            //  1: enable 8 bit: linear format. 10 bit: compressed format
-            //  2: 8 bit: compressed format. 10 bit: linear format
-            //  3: 8 bit: linear format. 10 bit: linear format
-            "enc_linear_color_format": 0,
+            //  0x0: no override,
+            //  0x1: enable 8 bit: linear format. 10 bit: compressed format
+            //  0x2: 8 bit: compressed format. 10 bit: linear format
+            //  0x3: 8 bit: linear format. 10 bit: linear format
+            "enc_linear_color_format": 3,
             // override chroma qp offset value for 8 and 10 bits:
             // default: 0
             // allowed override value: -12
-            "enc_chroma_qp_offset_10_bit": -12,
+            "enc_chroma_qp_offset_10_bit": 0,
             "enc_chroma_qp_offset_8_bit": 0,
-            // video certified version capability used for MediaCodec - MLVEC
-            "vt_certified_version": 0,
             //encoder bitrate savings control (CAC) - content adaptive coding feature
             // it is bitmask.
             //  0x0: disable CAC
             //  0x1: 8 bit: enable.  10 bit: disable
             //  0x2: 8 bit: disable. 10 bit: enable
             //  0x3: 8 bit: enable.  10 bit: enable
-            "enc_bitrate_savings": 3,
-            // max input work count, max output work done in one dump file
-            // if frame count in dump file is larger than max work count,
-            // will dump in a new file
-            // if set to 0, this feature is not enabled, all frames will dump
-            // into one file.
-            //This is debug feature, can slow down performance, work only for non secure case.
-            "max_input_work_count_for_dump": 0,
-            // Set max input dump count, max output work donw to limit dump file size.
-            // It specifies number of input or output worked dumped.
-            // Only keep last two dump files, remove all others.
-            // No IDR cut for new file. If a few frames mosaic at beginning, it is expected.
-            // A txt file is generated to record frame index,
-            // frame size and frame type for every frame.
-            // Name of txt file is like 20230512_142335_18.txt, 15 bytes system time, last session id.
-            "max_output_work_done_for_dump": 0,
-            // dump will begin from this timestamp, in us
-            // like 3004355, this means dump from 3.004355s
-            "timestamp_begin_to_dump": 0,
-            // dump location, if not set, will use default location
-            // dump location like /data/vendor/media/qc2/, absolute path
-            // max dump location length should less than 128 bytes.
-            "dump_location": 0
+            "enc_bitrate_savings": 0,
+            // minimum encoder bitrate boost
+            "enc_bitrate_boost": 15,
+            // maximum and minimum QPs for Encoders
+            // default: 10 - 40
+            // allowed override value: 0 - 51
+            "enc_qp_min": 10,
+            "enc_qp_max": 40,
+            // time threshold of output buffer allocation loop since last input buffer queued(ms)
+            // 0 --> no such limitation (loop until allocation done)
+            "max_retry_alloc_output_timeout": 2000,
+            // override default primaries to BT709 for >=UHD decode
+            "default_primaries_override" : 0,
+
+            // WARNING:
+            //    Please DON'T change these values, if you don't know what you are doing.
+            // These are the Video HAL capabilities. Video HAL may not function properly with wrong values.
+            // below are various capability used
+            "num_vpp_pipes": 1,
+            // video driver version capability used for skype MediaCodec
+            // Hex Value : 0xPPPPYYMM
+            //     PPPP [2 Bytes] - Product ID
+            //     YY   [1 Byte ] - Year (last two digits of year {00..99})
+            //     MM   [1 Byte ] - Month (01..12)
+            "vt_driver_version": 534123018,
+            // maximum LTR cont for encoder
+            "ltr_max_count": 2,
+            // Encoder preprocessing: maximum encoder downscalar factor possible in width or height or both direction
+            "preprocess_max_downscale_factor": 0,
+            // encoder support rotation as preprocessing
+            "preprocess_rotation": 1,
+            // Allowed encoder Hier-P maximum layer count: [0 - 6]
+            "enc_hier_p_max_temporal_layer_count": 6
         },
 
-        "ProsightModeBitrateTable": [
-            // 2D-array of [min_mb, max_mb, bitrate]
-            [3600, 8100, 120],
-            [8100, 8640, 160],
-            [8640, 32420, 245]
-         ],
-
-         "DolbyVision": {
-             "profiles": [4, 5, 8],
-             "max_main_tier_level": 12,
-             "max_high_tier_level": 12
-         },
-
-        // list of codec plugin libraries to be loaded into codec registry
-        "QC2CodecPlugins": [
-            "libqc2vppfilter.so",
-            "libqcodec2_imgtxrfilter.so",
-            //dolby post process
-            "libqcodec2_dolbydecoderfilter.so",
-            "libqcodec2_srfilter.so"
-        ],
-
-        "QC2PreProcessingFilters": [
-            "libqcodec2_imgtxrfilter.so",
-            "libqcodec2_cvpfilter.so",
-            "libqcodec2_streaminteg_filter.so"
-        ],
-
-        "QC2PostProcessingFilters": {
-            "vppFilter": [
-                "c2.mi.filter.sr"
+        // List of HW codecs enabled for this target
+        "codecs-available": {
+            "decoders": [
+                "c2.qti.avc.decoder",
+                "c2.qti.avc.decoder.low_latency",
+                "c2.qti.avc.decoder.secure",
+                "c2.qti.hevc.decoder",
+                "c2.qti.hevc.decoder.low_latency",
+                "c2.qti.hevc.decoder.secure",
+                "c2.qti.vp9.decoder",
+                "c2.qti.vp9.decoder.secure",
+                "c2.qti.vp9.decoder.low_latency"
+            ],
+            "encoders": [
+                "c2.qti.avc.encoder",
+                "c2.qti.hevc.encoder",
+                "c2.qti.hevc.encoder.cq",
+                "c2.qti.heic.encoder"
             ]
-        },
-        //
-        // Put below optional codecs under "OptionalCodecs" to enable it
-        // "c2.qti.dv.decoder",
-        // "c2.qti.dv.decoder.secure",
-        // "c2.qti.dv.encoder"
-        //
-        "OptionalCodecs": [
-          "c2.qti.dv.decoder",
-          "c2.qti.dv.decoder.secure"
-        ]
+        }
     }
 }
