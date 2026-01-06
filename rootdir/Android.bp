@@ -65,14 +65,14 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
-    name: "fstab.qcom",
-    src: "etc/fstab.qcom",
+    name: "fstab.default",
+    src: "etc/fstab.default",
     vendor: true,
 }
 
 prebuilt_etc {
-    name: "init.peridot.rc",
-    src: "etc/init.peridot.rc",
+    name: "init.warm.rc",
+    src: "etc/init.warm.rc",
     sub_dir: "init",
     vendor: true,
 }
@@ -103,13 +103,6 @@ prebuilt_etc {
     src: "etc/init.target.rc",
     sub_dir: "init/hw",
     vendor: true,
-}
-
-prebuilt_etc {
-    name: "ueventd-odm.rc",
-    filename: "ueventd.rc",
-    src: "etc/ueventd-odm.rc",
-    device_specific: true,
 }
 
 prebuilt_etc {
