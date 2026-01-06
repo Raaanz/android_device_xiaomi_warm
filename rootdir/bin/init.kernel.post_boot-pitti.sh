@@ -1,5 +1,5 @@
 #=============================================================================
-# Copyright (c) 2019-2024 Qualcomm Technologies, Inc.
+# Copyright (c) 2022-2024 Qualcomm Technologies, Inc.
 # All Rights Reserved.
 # Confidential and Proprietary - Qualcomm Technologies, Inc.
 #
@@ -30,46 +30,39 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #=============================================================================
 
-#Implementing this mechanism to jump to powersave governor if the script is not running
-#as it would be an indication for devs for debug purposes.
-
-function configure_vm_parameters() {
-	# Set Memory parameters.
-
-	MemTotalStr=`cat /proc/meminfo | grep MemTotal`
-	MemTotal=${MemTotalStr:16:8}
-	let RamSizeGB="( $MemTotal / 1048576 ) + 1"
-
-	# Set the min_free_kbytes and watermark_scale_factor value
-	if [ $RamSizeGB -ge 12 ]; then
-		# 12GB, 16GB
-		MinFreeKbytes=11584
-		WatermarkScale=30
-	elif [ $RamSizeGB -ge 8 ]; then
-		# 8GB
-		MinFreeKbytes=11584
-		WatermarkScale=40
-	elif [ $RamSizeGB -ge 4 ]; then
-		# 4GB, 6GB
-		MinFreeKbytes=7572
-		WatermarkScale=30
-	elif [ $RamSizeGB -ge 2 ]; then
-		# 2GB, 3GB
-		MinFreeKbytes=5792
-		WatermarkScale=50
+get_num_logical_cores_in_physical_cluster()
+{
+	i=0
+	logical_cores=(0 0 0 0 0 0)
+	if [ -f /sys/devices/system/cpu/cpu0/topology/cluster_id ] ; then
+		physical_cluster="cluster_id"
 	else
-		# 1GB
-		MinFreeKbytes=4096
-		WatermarkScale=60
+		physical_cluster="physical_package_id"
 	fi
-
-	echo $MinFreeKbytes  > /proc/sys/vm/min_free_kbytes
-	echo $WatermarkScale > /proc/sys/vm/watermark_scale_factor
-
+	for i in `ls -d /sys/devices/system/cpu/cpufreq/policy[0-9]*`
+	do
+		if [ -e $i ] ; then
+			num_cores=$(cat $i/related_cpus | wc -w)
+			first_cpu=$(echo "$i" | sed 's/[^0-9]*//g')
+			cluster_id=$(cat /sys/devices/system/cpu/cpu$first_cpu/topology/$physical_cluster)
+			logical_cores[cluster_id]=$num_cores
+		fi
+	done
+	cpu_topology=""
+	j=0
+	physical_cluster_count=$1
+	while [[ $j -lt $physical_cluster_count ]]; do
+		cpu_topology+=${logical_cores[$j]}
+		if [ $j -lt $physical_cluster_count-1 ]; then
+			cpu_topology+="_"
+		fi
+		j=$((j+1))
+	done
+	echo $cpu_topology
 }
 
-configure_vm_parameters
-
+#Implementing this mechanism to jump to powersave governor if the script is not running
+#as it would be an indication for devs for debug purposes.
 fallback_setting()
 {
 	governor="powersave"
@@ -79,30 +72,25 @@ fallback_setting()
 			echo $governor > $i/scaling_governor
 		fi
 	done
+	exit
 }
 
-
-if [ -f /sys/devices/soc0/soc_id ]; then
-	platformid=`cat /sys/devices/soc0/soc_id`
-fi
-
-case "$platformid" in
-	"623")
-		#Pass as an argument the max number of clusters supported on the SOC
-		/vendor/bin/sh /vendor/bin/init.kernel.post_boot-pitti.sh 2
-		;;
+variant=$(get_num_logical_cores_in_physical_cluster "$1")
+echo "CPU topology: ${variant}"
+case "$variant" in
+	"6_2")
+	/vendor/bin/sh /vendor/bin/init.kernel.post_boot-pitti_default_6_2.sh
+	;;
+	"4_1")
+	/vendor/bin/sh /vendor/bin/init.kernel.post_boot-pitti_4_1.sh
+	;;
+	"4_0")
+	/vendor/bin/sh /vendor/bin/init.kernel.post_boot-pitti_4_0.sh
+	;;
 	*)
-		echo "***WARNING***: Invalid SoC ID\n\t No postboot settings applied!!\n"
-		fallback_setting
-		;;
+	echo "***WARNING***: Postboot script not present for the variant ${variant}"
+	fallback_setting
+	;;
 esac
 
-# set rq_affinity to 2 on ufs devices
-for sd in /sys/block/sd*/queue/rq_affinity
-do
-	echo 2 > $sd
-done
-
-sleep 600
-echo 8192 > /proc/sys/vm/min_free_kbytes
-echo 50 > /proc/sys/vm/watermark_scale_factor
+setprop vendor.post_boot.parsed 1
