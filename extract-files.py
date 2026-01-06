@@ -36,6 +36,8 @@ def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     (
+        'sqlite3',
+        'libqshcamera',
     ): lib_fixup_odm_suffix,
     (
         'vendor.qti.diaghal@1.0',
@@ -67,6 +69,7 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed(
             'android.hardware.graphics.allocator-V1-ndk.so',
             'android.hardware.graphics.allocator-V2-ndk.so'
+    ),
     (
         'vendor/lib64/libmialgoengine.so',
         'vendor/lib64/libmialgoengine2.so',
