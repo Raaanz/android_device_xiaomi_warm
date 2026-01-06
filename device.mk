@@ -239,22 +239,21 @@ PRODUCT_COPY_FILES += \
 
 # Overlays
 PRODUCT_PACKAGES += \
-    ApertureOverlayPeridot \
-    CarrierConfigOverlayPeridot \
-    FrameworkOverlayPeridot \
-    LineageDialerOverlayPeridot \
-    LineageSDKOverlayPeridot \
-    LineageSettingsOverlayPeridot \
-    NfcOverlayPeridot \
-    SecureElementOverlayPeridot \
-    SettingsOverlayPeridot \
-    SettingsProviderOverlayPeridotPOCO \
-    SettingsProviderOverlayPeridotRedmi \
-    SystemUIOverlayPeridot \
-    TelephonyOverlayPeridot \
-    WifiOverlayPeridot \
-    WifiOverlayPeridotPOCO \
-    WifiOverlayPeridotRedmi
+    ApertureOverlayWarm \
+    CarrierConfigOverlayWarm \
+    FrameworkOverlayWarm \
+    LineageDialerOverlayWarm \
+    LineageSDKOverlayWarm \
+    LineageSettingsOverlayWarm \
+    SecureElementOverlayWarm \
+    SettingsOverlayWarm \
+    SettingsProviderOverlayWarmPOCO \
+    SettingsProviderOverlayWarmRedmi \
+    SystemUIOverlayWarm \
+    TelephonyOverlayWarm \
+    WifiOverlayWarm \
+    WifiOverlayWarmPOCO \
+    WifiOverlayWarmRedmi
 
 PRODUCT_PACKAGES += \
     NcmTetheringOverlay
