@@ -1174,6 +1174,7 @@ odm/etc/disp0/mdss_dsi_panel_c3f2_46_03_0c_hd_video/mi_gc_3.txt
 vendor/lib64/libgf_hal.so
 vendor/lib64/libgf_ca.so
 vendor/lib64/vendor.xiaomi.hardware.fx.tunnel-V1-ndk.so
+vendor/lib64/vendor.xiaomi.hardware.fingerprintextension-V1-ndk.so
 
 # GNSS
 vendor/bin/hw/android.hardware.gnss-aidl-service-qti
