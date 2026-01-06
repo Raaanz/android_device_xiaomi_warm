@@ -15,12 +15,12 @@
         <fqname>@1.1::IBluetoothHci/default</fqname>
     </hal>
     <hal format="aidl">
-        <name>android.hardware.gatekeeper</name>
-        <fqname>IGatekeeper/default</fqname>
+        <name>android.hardware.drm</name>
+        <fqname>IDrmFactory/wfdhdcp</fqname>
     </hal>
     <hal format="aidl">
-        <name>android.hardware.secure_element</name>
-        <fqname>ISecureElement/eSE1</fqname>
+        <name>android.hardware.gatekeeper</name>
+        <fqname>IGatekeeper/default</fqname>
     </hal>
     <hal format="hidl">
         <name>com.qualcomm.qti.dpm.api</name>
@@ -78,15 +78,17 @@
         <fqname>@1.0::IFmHci/default</fqname>
     </hal>
     <hal format="hidl">
-        <name>vendor.qti.hardware.secureprocessor.device</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::ISecureProcessor/qti-tee</fqname>
-        <fqname>@1.0::ISecureProcessor/qti-tvm</fqname>
-    </hal>
-    <hal format="hidl">
         <name>vendor.qti.hardware.wifi.wifilearner</name>
         <transport>hwbinder</transport>
         <fqname>@1.0::IWifiStats/wifiStats</fqname>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.qti.hardware.wifidisplaysession</name>
+        <transport>hwbinder</transport>
+        <fqname>@1.0::IWifiDisplaySession/wifidisplaysession</fqname>
+        <fqname>@1.0::IWifiDisplaySessionAudioTrack/wifidisplaysessionaudiotrack</fqname>
+        <fqname>@1.0::IWifiDisplaySessionImageTrack/wifidisplaysessionimagetrack</fqname>
+        <fqname>@1.0::IWifiDisplaySessionVideoTrack/wifidisplaysessionvideotrack</fqname>
     </hal>
     <hal format="hidl">
         <name>vendor.qti.ims.callinfo</name>
@@ -97,10 +99,5 @@
         <name>vendor.qti.ims.factory</name>
         <transport>hwbinder</transport>
         <fqname>@1.1::IImsFactory/default</fqname>
-    </hal>
-    <hal format="aidl">
-        <name>vendor.xiaomi.hardware.fx.tunnel</name>
-        <version>1</version>
-        <fqname>IMiFxTunnel/default</fqname>
     </hal>
 </manifest>
