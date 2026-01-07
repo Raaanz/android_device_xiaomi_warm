@@ -180,13 +180,10 @@ PRODUCT_PACKAGES += \
 
 # Init
 PRODUCT_PACKAGES += \
-    charger_fw_fstab.qti \
     fstab.default
 
 PRODUCT_PACKAGES += \
-    init.qcom.factory.rc \
     init.warm.rc \
-    init.qcom.rc \
     init.recovery.qcom.rc \
     init.target.rc
 

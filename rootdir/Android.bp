@@ -1,10 +1,4 @@
 prebuilt_etc {
-    name: "charger_fw_fstab.qti",
-    src: "etc/charger_fw_fstab.qti",
-    vendor: true,
-}
-
-prebuilt_etc {
     name: "fstab.default",
     src: "etc/fstab.default",
     vendor: true,
@@ -14,20 +8,6 @@ prebuilt_etc {
     name: "init.warm.rc",
     src: "etc/init.warm.rc",
     sub_dir: "init",
-    vendor: true,
-}
-
-prebuilt_etc {
-    name: "init.qcom.factory.rc",
-    src: "etc/init.qcom.factory.rc",
-    sub_dir: "init/hw",
-    vendor: true,
-}
-
-prebuilt_etc {
-    name: "init.qcom.rc",
-    src: "etc/init.qcom.rc",
-    sub_dir: "init/hw",
     vendor: true,
 }
 
