@@ -1286,9 +1286,19 @@ system_ext/framework/com.android.hotwordenrollment.common.util.jar
 
 # Kernel
 vendor/bin/init.qti.write.sh
+vendor/bin/init.class_main.sh
 vendor/bin/system_dlkm_modprobe.sh
 vendor/bin/vendor_modprobe.sh
 vendor/etc/init/hw/init.qti.kernel.rc
+vendor/bin/init.kernel.post_boot-memory.sh
+vendor/bin/init.kernel.post_boot-pitti.sh
+vendor/bin/init.kernel.post_boot-pitti_4_0.sh
+vendor/bin/init.kernel.post_boot-pitti_4_1.sh
+vendor/bin/init.kernel.post_boot-pitti_default_6_2.sh
+vendor/bin/init.kernel.post_boot.sh
+vendor/bin/init.qcom.early_boot.sh
+vendor/bin/init.qcom.post_boot.sh
+vendor/bin/init.qcom.sh
 
 # Keymaster
 vendor/bin/hw/android.hardware.keymaster@4.0-service-qti
