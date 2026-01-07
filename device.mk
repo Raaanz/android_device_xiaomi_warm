@@ -118,6 +118,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.full.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.full.xml \
     frameworks/native/data/etc/android.hardware.camera.raw.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.raw.xml
 
+# Boot animation
+TARGET_SCREEN_HEIGHT := 1640
+TARGET_SCREEN_WIDTH := 720
+
 # Display
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.composer3-V1-ndk.vendor \
