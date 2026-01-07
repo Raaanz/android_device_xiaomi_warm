@@ -185,9 +185,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.warm.rc \
     init.recovery.qcom.rc
-    
-PRODUCT_PACKAGES += \
-    ueventd.qcom.rc
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.default:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.default

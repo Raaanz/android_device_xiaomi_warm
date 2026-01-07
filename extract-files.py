@@ -112,6 +112,12 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/vendor.libdpmframework.so': blob_fixup()
         .add_needed('libbinder_shim.so')
         .add_needed('libhidlbase_shim.so'),
+    'vendor/etc/ueventd.rc': blob_fixup()
+        .add_line_if_missing(
+        '\n# Battery\n'
+        '/sys/class/qcom-battery     input_suspend            0660    system  system\n'
+        '/sys/class/qcom-battery     fastcharge_enable        0660    system  system'
+    ),
 }  # fmt: skip
 
 module = ExtractUtilsModule(

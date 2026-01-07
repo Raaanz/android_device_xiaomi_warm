@@ -1289,6 +1289,7 @@ vendor/bin/init.qti.write.sh
 vendor/bin/init.class_main.sh
 vendor/bin/system_dlkm_modprobe.sh
 vendor/bin/vendor_modprobe.sh
+vendor/etc/ueventd.rc
 vendor/etc/init/hw/init.target.rc
 vendor/etc/init/hw/init.qti.kernel.rc
 vendor/etc/init/hw/init.qcom.rc
