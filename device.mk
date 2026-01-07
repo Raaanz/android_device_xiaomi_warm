@@ -184,9 +184,8 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     init.warm.rc \
-    init.recovery.qcom.rc \
-    init.target.rc
-
+    init.recovery.qcom.rc
+    
 PRODUCT_PACKAGES += \
     ueventd.qcom.rc
 
