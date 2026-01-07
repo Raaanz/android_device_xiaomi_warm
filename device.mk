@@ -248,7 +248,6 @@ PRODUCT_PACKAGES += \
     LineageDialerOverlayWarm \
     LineageSDKOverlayWarm \
     LineageSettingsOverlayWarm \
-    SecureElementOverlayWarm \
     SettingsOverlayWarm \
     SettingsProviderOverlayWarmPOCO \
     SettingsProviderOverlayWarmRedmi \
