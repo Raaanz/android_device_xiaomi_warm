@@ -1198,7 +1198,6 @@ vendor/etc/vintf/manifest/android.hardware.gnss-aidl-service-qti.xml
 vendor/etc/vintf/manifest/vendor.qti.gnss-service.xml
 vendor/etc/apdr.conf
 vendor/etc/batching.conf
-vendor/etc/gps.conf
 vendor/etc/gps_diag.cfg
 vendor/etc/izat.conf
 vendor/etc/lowi.conf
