@@ -1,0 +1,6 @@
+prebuilt_etc {
+    name: "init.warm.rc",
+    src: "etc/init.warm.rc",
+    sub_dir: "init",
+    vendor: true,
+}
