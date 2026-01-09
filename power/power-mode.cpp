@@ -73,3 +73,4 @@ bool setDeviceSpecificMode(Mode type, bool enabled) {
 }  // namespace power
 }  // namespace hardware
 }  // namespace android
+}  // namespace aidl
